@@ -1,5 +1,11 @@
+import Toast from "../components/ui/Toast";
+
 const Dashboard = () => {
-  return <div>This is the Dashboard</div>;
+  return (
+    <div>
+      <Toast message="Login Successful" status="success" />
+    </div>
+  );
 };
 
 export default Dashboard;
