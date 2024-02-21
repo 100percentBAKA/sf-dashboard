@@ -1,19 +1,10 @@
-import { useState } from "react";
+import { RouterProvider } from "react-router-dom";
+import router from "./Router";
 
 function App() {
-  const [click, setClick] = useState(0);
-
   return (
     <>
-      <div className="flex flex-col gap-4 items-center justify-center w-full h-screen">
-        <div>{click}</div>
-        <button
-          className="btn btn-primary"
-          onClick={() => setClick((prevState) => prevState + 1)}
-        >
-          Click
-        </button>
-      </div>
+      <RouterProvider router={router} />
     </>
   );
 }
