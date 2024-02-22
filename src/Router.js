@@ -3,6 +3,8 @@ import Root from "./pages/Root"
 import Dashboard from "./pages/Dashboard"
 import Login from "./pages/Login"
 import ForgetPasswordRoot from "./pages/forget/ForgetPasswordRoot"
+import ForgetForm from "./pages/forget/ForgetForm"
+import OtpForm from "./pages/forget/OtpForm"
 
 const router = createBrowserRouter(
     [
@@ -23,7 +25,18 @@ const router = createBrowserRouter(
         },
         {
             path: "/forget",
-            element: <ForgetPasswordRoot />
+            element: <ForgetPasswordRoot />,
+            children: [
+                {
+                    path: "/forget",
+                    element: <ForgetForm />,
+                    index: true
+                },
+                {
+                    path: "/forget/otp",
+                    element: <OtpForm />
+                }
+            ]
         }
     ]
 )

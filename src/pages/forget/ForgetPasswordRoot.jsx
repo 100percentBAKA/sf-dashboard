@@ -1,19 +1,23 @@
+import { Outlet } from "react-router-dom";
+
 const ForgetPasswordRoot = () => {
   return (
     <div className="flex w-screen h-screen">
-      <div className="w-[65%] h-[100%] flex flex-col gap-6 justify-center"></div>
-      <div className="w-[35%] h-[100%] bg-[#7fa0d959]">
-        {/* <div>
-          <div>
-            <ul className="steps steps-vertical lg:steps-horizontal">
-              <li className="step step-primary">Register</li>
-              <li className="step step-primary">Choose plan</li>
-              <li className="step">Purchase</li>
-              <li className="step">Receive Product</li>
-            </ul>
+      {/* assets container */}
+      <div className="lg:w-[50%] h-[100%]"></div>
+      <div className="w-[100%] lg:w-[50%] h-[100%] bg-[#7fa0d959] flex items-center justify-center p-4">
+        <div className="flex flex-col gap-10">
+          {/* Step */}
+          <ul className="steps steps-horizontal">
+            <li className="step step-primary">RESET</li>
+            <li className="step step-primary ">OTP</li>
+          </ul>
+
+          {/* Login form */}
+          <div className="flex items-center justify-center">
+            <Outlet />
           </div>
-          <form className="bg-white p-6 lg:p-10 xl:p-12 flex flex-col gap-6 rounded-[10px] absolute top-[18%] right-[3.5%] lg:right-[9%] xl:right-[18%]"></form>
-        </div> */}
+        </div>
       </div>
     </div>
   );
