@@ -2,7 +2,7 @@ import { createBrowserRouter } from "react-router-dom"
 import Root from "./pages/Root"
 import Dashboard from "./pages/Dashboard"
 import Login from "./pages/Login"
-import Register from "./pages/Register"
+import ForgetPasswordRoot from "./pages/forget/ForgetPasswordRoot"
 
 const router = createBrowserRouter(
     [
@@ -22,8 +22,8 @@ const router = createBrowserRouter(
             element: <Login />
         },
         {
-            path: "/register",
-            element: <Register />
+            path: "/forget",
+            element: <ForgetPasswordRoot />
         }
     ]
 )

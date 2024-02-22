@@ -1,6 +1,6 @@
 import { useFormik } from "formik";
 import * as yup from "yup";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 // import PropTypes from "prop-types";
 
 // LOGIN SCHEMA
@@ -91,13 +91,19 @@ const Login = () => {
               </div>
             ) : null}
           </div>
-          <div className="flex gap-2 items-center">
-            <input
-              type="checkbox"
-              defaultChecked
-              className="checkbox checkbox-xs"
-            />
-            <div>Remember me</div>
+          <div className="flex items-center justify-between">
+            <div className="flex gap-2 items-center">
+              <input
+                type="checkbox"
+                defaultChecked
+                className="checkbox checkbox-xs"
+              />
+              <div className="text-[14px]">Remember me</div>
+            </div>
+
+            <Link to="/forget" className="text-[14px]">
+              Forget Password?
+            </Link>
           </div>
         </div>
 
