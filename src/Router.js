@@ -5,6 +5,7 @@ import Login from "./pages/Login"
 import ForgetPasswordRoot from "./pages/forget/ForgetPasswordRoot"
 import ForgetForm from "./pages/forget/ForgetForm"
 import OtpForm from "./pages/forget/OtpForm"
+import ResetForm from "./pages/forget/ResetForm"
 
 const router = createBrowserRouter(
     [
@@ -35,6 +36,10 @@ const router = createBrowserRouter(
                 {
                     path: "/forget/otp",
                     element: <OtpForm />
+                },
+                {
+                    path: "/forget/reset",
+                    element: <ResetForm />
                 }
             ]
         }

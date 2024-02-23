@@ -1,11 +1,14 @@
 /* eslint-disable react/no-unescaped-entities */
 import React from "react";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const OtpForm = () => {
   const [otp, setOtp] = React.useState(new Array(4).fill(""));
   const [activeOTPIndex, setActiveOTPIndex] = React.useState(0);
+
   const inputRefs = React.useRef([]);
+  const navigate = useNavigate();
 
   const handleChange = (index, value) => {
     value = value.slice(-1);
@@ -27,11 +30,15 @@ const OtpForm = () => {
     }
   }, [activeOTPIndex]);
 
+  const handleVerifyClick = () => {
+    navigate("/forget/reset");
+  };
+
   return (
     <form className="bg-white p-6 lg:p-10 xl:p-12 flex flex-col gap-6 rounded-[10px]">
       <div className="flex flex-col gap-2">
         <div className="text-2xl font-semibold">Email Verification</div>
-        <div>OTP has been sent to xy***@gmail.com</div>
+        <div>OTP has been sent to +919343****56</div>
       </div>
 
       {/* OTP boxes */}
@@ -52,7 +59,9 @@ const OtpForm = () => {
         ))}
       </div>
 
-      <button className="btn btn-primary">Verify Account</button>
+      <button className="btn btn-primary" onClick={handleVerifyClick}>
+        Verify Account
+      </button>
 
       <div className="text-center">
         Didn't receive otp?{" "}

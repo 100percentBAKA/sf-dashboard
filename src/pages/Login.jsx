@@ -24,7 +24,7 @@ const Login = () => {
 
   const formik = useFormik({
     initialValues: {
-      usernameEmail: "",
+      username: "",
       password: "",
     },
 
@@ -49,19 +49,19 @@ const Login = () => {
           >
             <div className="text-2xl font-semibold">Welcome</div>
 
-            {/* username or email */}
+            {/* username */}
             <div className="flex flex-col gap-2">
-              <div>Username or Email</div>
+              <div>Username</div>
               <div>
                 <StyledInputText
-                  name="usernameEmail"
+                  name="username"
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
-                  value={formik.values.usernameEmail}
+                  value={formik.values.username}
                 />
-                {formik.touched.usernameEmail && formik.errors.usernameEmail ? (
+                {formik.touched.username && formik.errors.username ? (
                   <div className="text-[12px] text-red-500">
-                    {formik.errors.usernameEmail}
+                    {formik.errors.username}
                   </div>
                 ) : null}
               </div>

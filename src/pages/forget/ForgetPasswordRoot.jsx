@@ -9,8 +9,9 @@ const ForgetPasswordRoot = () => {
         <div className="flex flex-col gap-10">
           {/* Step */}
           <ul className="steps steps-horizontal">
-            <li className="step step-primary">RESET</li>
+            <li className="step step-primary">Username</li>
             <li className="step step-primary ">OTP</li>
+            <li className="step">Reset</li>
           </ul>
 
           {/* Login form */}
