@@ -1,0 +1,7 @@
+.icon-btn {
+  @apply p-2 rounded-badge bg-transparent transition-all duration-300 ease-in-out hover:bg-[#fff];
+}
+
+.hide {
+  @apply hidden;
+}
