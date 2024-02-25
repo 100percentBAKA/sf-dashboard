@@ -13,86 +13,86 @@ import {
   FaUser,
 } from "react-icons/fa";
 
+const categories = [
+  {
+    name: "Dashboard",
+    icon: <FaHome />,
+    to: "",
+    subcategories: [],
+  },
+  {
+    name: "File Category",
+    icon: <FaFile />,
+    subcategories: [
+      {
+        name: "sub1",
+        icon: <FaFile />,
+        to: "",
+      },
+      {
+        name: "sub2",
+        icon: <FaFile />,
+        to: "",
+      },
+      {
+        name: "sub3",
+        icon: <FaFile />,
+        to: "",
+      },
+    ],
+  },
+  {
+    name: "File Upload",
+    to: "",
+    icon: <FaPage4 />,
+    subcategories: [],
+  },
+  {
+    name: "Pdf Books",
+    to: "",
+    icon: <FaBook />,
+    subcategories: [],
+  },
+  {
+    name: "Publications",
+    to: "",
+    icon: <FaPagelines />,
+    subcategories: [],
+  },
+  {
+    name: "Sales",
+    to: "",
+    icon: <FaDollarSign />,
+    subcategories: [],
+  },
+  {
+    name: "Gallery",
+    to: "",
+    icon: <FaImage />,
+    subcategories: [],
+  },
+  {
+    name: "Excel File Upload",
+    to: "",
+    icon: <FaFileExcel />,
+    subcategories: [],
+  },
+  {
+    name: "Reports",
+    to: "",
+    icon: <FaBookOpen />,
+    subcategories: [],
+  },
+  {
+    name: "Logout",
+    to: "",
+    icon: <FaUser />,
+    subcategories: [],
+  },
+];
+
 const Sidebar = () => {
   const [openCategory, setOpenCategory] = useState(null);
-
-  const categories = [
-    {
-      name: "Dashboard",
-      icon: <FaHome />,
-      to: "",
-      subcategories: [],
-    },
-    {
-      name: "File Category",
-      icon: <FaFile />,
-      subcategories: [
-        {
-          name: "sub1",
-          icon: <FaFile />,
-          to: "",
-        },
-        {
-          name: "sub2",
-          icon: <FaFile />,
-          to: "",
-        },
-        {
-          name: "sub3",
-          icon: <FaFile />,
-          to: "",
-        },
-      ],
-    },
-    {
-      name: "File Upload",
-      to: "",
-      icon: <FaPage4 />,
-      subcategories: [],
-    },
-    {
-      name: "Pdf Books",
-      to: "",
-      icon: <FaBook />,
-      subcategories: [],
-    },
-    {
-      name: "Publications",
-      to: "",
-      icon: <FaPagelines />,
-      subcategories: [],
-    },
-    {
-      name: "Sales",
-      to: "",
-      icon: <FaDollarSign />,
-      subcategories: [],
-    },
-    {
-      name: "Gallery",
-      to: "",
-      icon: <FaImage />,
-      subcategories: [],
-    },
-    {
-      name: "Excel File Upload",
-      to: "",
-      icon: <FaFileExcel />,
-      subcategories: [],
-    },
-    {
-      name: "Reports",
-      to: "",
-      icon: <FaBookOpen />,
-      subcategories: [],
-    },
-    {
-      name: "Logout",
-      to: "",
-      icon: <FaUser />,
-      subcategories: [],
-    },
-  ];
 
   return (
     <div className="w-full bg-primary h-screen p-2 overflow-auto">
