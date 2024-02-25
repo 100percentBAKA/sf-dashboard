@@ -10,17 +10,17 @@ import Navbar from "../components/Navbar";
 const Root = () => {
   return (
     <div className="w-screen h-screen flex">
-      {/* fixed sidebar */}
-      <div className="hidden lg:flex lg:h-[100%] lg:w-[250px] xl:w-[330px] bg-green-500">
+      {/* Fixed sidebar */}
+      <div className="h-full fixed left-0 top-0 bg-green-500 w-[250px] xl:w-[330px]">
         <Sidebar />
       </div>
 
       {/* Main area */}
-      <div className="flex-1 flex flex-col p-6">
+      <div className="flex-1 ml-[250px] xl:ml-[330px] p-6">
         <Navbar />
 
-        {/* main working area */}
-        <main className="bg-blue-500 h-full mt-10 rounded-[10px]">
+        {/* Main working area */}
+        <main className="flex-1 bg-blue-300 mt-10 rounded-[10px]">
           <Outlet />
         </main>
       </div>
