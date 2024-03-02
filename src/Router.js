@@ -8,6 +8,7 @@ import OtpForm from "./pages/forget/OtpForm";
 import ResetForm from "./pages/forget/ResetForm";
 import FileUpload from "./pages/FileUpload";
 import ExcelUpload from "./pages/ExcelUpload";
+import Categories from "./pages/Categories";
 
 const router = createBrowserRouter([
     {
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
                 path: "dashboard",
                 element: <Dashboard />,
                 index: true,
+            },
+            {
+                path: "categories",
+                element: <Categories />,
             },
             {
                 path: "file-upload",
