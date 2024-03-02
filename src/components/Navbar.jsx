@@ -1,95 +1,6 @@
 import { NavLink } from "react-router-dom";
-import {
-  FaBook,
-  FaBookOpen,
-  FaDollarSign,
-  FaFile,
-  FaFileExcel,
-  FaHome,
-  FaImage,
-  FaPage4,
-  FaPagelines,
-  FaUser,
-} from "react-icons/fa";
 import { useState } from "react";
-
-const categories = [
-  {
-    name: "Dashboard",
-    icon: <FaHome />,
-    to: "",
-    subcategories: [],
-  },
-  {
-    name: "File Category",
-    icon: <FaFile />,
-    subcategories: [
-      {
-        name: "sub1",
-        icon: <FaFile />,
-        to: "",
-      },
-      {
-        name: "sub2",
-        icon: <FaFile />,
-        to: "",
-      },
-      {
-        name: "sub3",
-        icon: <FaFile />,
-        to: "",
-      },
-    ],
-  },
-  {
-    name: "File Upload",
-    to: "",
-    icon: <FaPage4 />,
-    subcategories: [],
-  },
-  {
-    name: "Pdf Books",
-    to: "",
-    icon: <FaBook />,
-    subcategories: [],
-  },
-  {
-    name: "Publications",
-    to: "",
-    icon: <FaPagelines />,
-    subcategories: [],
-  },
-  {
-    name: "Sales",
-    to: "",
-    icon: <FaDollarSign />,
-    subcategories: [],
-  },
-  {
-    name: "Gallery",
-    to: "",
-    icon: <FaImage />,
-    subcategories: [],
-  },
-  {
-    name: "Excel File Upload",
-    to: "",
-    icon: <FaFileExcel />,
-    subcategories: [],
-  },
-  {
-    name: "Reports",
-    to: "",
-    icon: <FaBookOpen />,
-    subcategories: [],
-  },
-  {
-    name: "Logout",
-    to: "",
-    icon: <FaUser />,
-    subcategories: [],
-  },
-];
+import sidebarCat from "../data/sidebarCat";
 
 const Navbar = () => {
   const [openCategory, setOpenCategory] = useState(null);
@@ -99,7 +10,7 @@ const Navbar = () => {
       <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
       <div className="drawer-content flex flex-col">
         {/* Navbar */}
-        <div className="w-full navbar bg-[#fff] rounded-[10px]">
+        <div className="w-full navbar bg-[#fff] rounded-[10px] shadow-md">
           <div className="flex-none lg:hidden">
             <label
               htmlFor="my-drawer-3"
@@ -124,6 +35,7 @@ const Navbar = () => {
           <div className="flex-1 px-2 mx-2">Navbar Title</div>
           <div className="flex-none hidden lg:block">
             <ul className="menu menu-horizontal">
+              {/* //! add logout and user avatar here */}
               {/* Navbar menu content here */}
               {/* <li>
                 <a>Navbar Item 1</a>
@@ -143,7 +55,7 @@ const Navbar = () => {
         ></label>
         <div className="bg-primary h-screen px-4 py-2 overflow-auto">
           <ul>
-            {categories.map((category, index) => (
+            {sidebarCat.map((category, index) => (
               <li key={index} className="my-6 rounded-md">
                 <NavLink to={category.to}>
                   <button
