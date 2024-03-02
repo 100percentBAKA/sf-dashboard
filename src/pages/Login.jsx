@@ -1,7 +1,6 @@
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { Link, useNavigate } from "react-router-dom";
-// import PropTypes from "prop-types";
 
 // LOGIN SCHEMA
 const LOGIN_SCHEMA = yup.object().shape({
@@ -35,6 +34,10 @@ const Login = () => {
       navigate("/");
     },
   });
+
+  const handleSubmit = () => {
+    navigate("/app/dashboard");
+  };
 
   return (
     <div className="flex w-screen h-screen">
@@ -101,7 +104,11 @@ const Login = () => {
             </div>
 
             {/* sign in */}
-            <button type="submit" className="btn btn-primary">
+            <button
+              type="submit"
+              className="btn btn-primary"
+              onClick={handleSubmit}
+            >
               Sign In
             </button>
           </form>
