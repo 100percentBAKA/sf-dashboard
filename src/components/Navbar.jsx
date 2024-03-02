@@ -1,9 +1,26 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import sidebarCat from "../data/sidebarCat";
+import { useMemo } from "react";
 
 const Navbar = () => {
   const [openCategory, setOpenCategory] = useState(null);
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+
+  const breadcrumbs = useMemo(() => {
+    const pathnames = pathname.split("/").filter((x) => x);
+    const breadcrumbItems = pathnames.map((_, index, arr) => {
+      const url = `/${arr.slice(0, index + 1).join("/")}`;
+      const name = arr[index];
+      return { name, url };
+    });
+    return breadcrumbItems;
+  }, [pathname]);
+
+  const handleLogout = () => {
+    navigate("/");
+  };
 
   return (
     <nav className="drawer">
@@ -32,17 +49,40 @@ const Navbar = () => {
               </svg>
             </label>
           </div>
-          <div className="flex-1 px-2 mx-2">Navbar Title</div>
+
+          <div className="flex-1 px-2 mx-2">
+            {/* Bread Crumbs section */}
+            <div className="flex-col">
+              <div className="text-sm breadcrumbs">
+                <ul>
+                  {breadcrumbs.map((breadcrumb, index) => (
+                    <li key={index}>
+                      <NavLink to={breadcrumb.url}>{breadcrumb.name}</NavLink>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="text-[18px] font-semibold">
+                {breadcrumbs[breadcrumbs.length - 1].name
+                  .charAt(0)
+                  .toUpperCase() +
+                  breadcrumbs[breadcrumbs.length - 1].name.slice(1)}
+              </div>
+            </div>
+          </div>
           <div className="flex-none hidden lg:block">
             <ul className="menu menu-horizontal">
               {/* //! add logout and user avatar here */}
               {/* Navbar menu content here */}
-              {/* <li>
-                <a>Navbar Item 1</a>
-              </li>
               <li>
-                <a>Navbar Item 2</a>
-              </li> */}
+                <button
+                  className="shadow-lg btn btn-primary"
+                  onClick={handleLogout}
+                >
+                  Logout
+                </button>
+              </li>
             </ul>
           </div>
         </div>

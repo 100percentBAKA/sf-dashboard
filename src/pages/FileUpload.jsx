@@ -10,9 +10,7 @@ const FileUpload = () => {
             Select Category
           </label>
           <select className="select w-full" id="category">
-            <option disabled selected>
-              Select Category
-            </option>
+            <option disabled>Select Category</option>
             <option values="category-1">Category 1</option>
             <option values="category-2">Category 2</option>
             <option values="category-3">Category 3</option>
@@ -27,9 +25,7 @@ const FileUpload = () => {
             Select Sub Category
           </label>
           <select className="select w-full" id="category">
-            <option disabled selected>
-              Select Sub Category
-            </option>
+            <option disabled>Select Sub Category</option>
             <option values="category-1">Category 1</option>
             <option values="category-2">Category 2</option>
             <option values="category-3">Category 3</option>
@@ -44,9 +40,7 @@ const FileUpload = () => {
             Select Sub to Sub Category
           </label>
           <select className="select w-full" id="category">
-            <option disabled selected>
-              Select Sub to Sub Category
-            </option>
+            <option disabled>Select Sub to Sub Category</option>
             <option values="category-1">Category 1</option>
             <option values="category-2">Category 2</option>
             <option values="category-3">Category 3</option>
@@ -73,9 +67,7 @@ const FileUpload = () => {
             Select File Type
           </label>
           <select className="select w-full" id="category">
-            <option disabled selected>
-              Select File Type
-            </option>
+            <option disabled>Select File Type</option>
             <option values="category-1">Text</option>
             <option values="category-2">PDF</option>
           </select>

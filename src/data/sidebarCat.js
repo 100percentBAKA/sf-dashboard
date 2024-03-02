@@ -21,7 +21,7 @@ const sidebarCat = [
     {
         name: "File Category",
         icon: <FaFile />,
-        to: "",
+        to: "/app/categories",
         subcategories: [],
     },
     {
