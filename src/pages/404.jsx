@@ -1,4 +1,12 @@
+import { useNavigate } from "react-router-dom";
+
 const PageNotFound = () => {
+  const navigate = useNavigate();
+
+  const handleBackClick = () => {
+    navigate("/app/dashboard");
+  };
+
   return (
     <div className="bg-base-100 w-full h-[100vh] flex items-center justify-center">
       <main className="grid place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8 w-fit rounded-xl shadow-xl">
@@ -11,7 +19,9 @@ const PageNotFound = () => {
             Sorry, we couldn’t find the page you’re looking for.
           </p>
           <div className="mt-10 flex items-center justify-center gap-x-6">
-            <button className="btn btn-primary">Go Back</button>
+            <button className="btn btn-primary" onClick={handleBackClick}>
+              Go Back
+            </button>
             <a href="#" className="text-sm font-semibold text-gray-900">
               Contact support <span aria-hidden="true">&rarr;</span>
             </a>

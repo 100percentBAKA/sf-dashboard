@@ -27,13 +27,13 @@ const sidebarCat = [
     {
         name: "File Sub Category",
         icon: <FaFile />,
-        to: "",
+        to: "/app/sub-categories",
         subcategories: [],
     },
     {
         name: "File Sub to Sub Category",
         icon: <FaFile />,
-        to: "",
+        to: "/app/sub-sub-categories",
         subcategories: [],
     },
     {
@@ -44,13 +44,13 @@ const sidebarCat = [
     },
     {
         name: "Pdf Books",
-        to: "",
+        to: "/app/pdf-books",
         icon: <FaBook />,
         subcategories: [],
     },
     {
         name: "Publications",
-        to: "",
+        to: "/app/pub",
         icon: <FaPagelines />,
         subcategories: [],
     },
@@ -62,18 +62,18 @@ const sidebarCat = [
             {
                 name: "Book Sales",
                 icon: <FaFile />,
-                to: "",
+                to: "/app/book-sales",
             },
             {
                 name: "PDF Sales",
                 icon: <FaFile />,
-                to: "",
+                to: "/app/pdf-sales",
             },
         ],
     },
     {
         name: "Gallery",
-        to: "",
+        to: "/app/gallery",
         icon: <FaImage />,
         subcategories: [],
     },
@@ -85,7 +85,7 @@ const sidebarCat = [
     },
     {
         name: "Reports",
-        to: "",
+        to: "/app/reports",
         icon: <FaBookOpen />,
         subcategories: [],
     },
