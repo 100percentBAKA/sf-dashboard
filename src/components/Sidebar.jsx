@@ -12,7 +12,7 @@ const Sidebar = () => {
           <li key={index} className="my-6 rounded-md">
             <NavLink to={category.to}>
               <button
-                className="w-full flex items-center gap-6 px-4 py-2 text-sm font-medium text-white rounded-md focus:outline-none hover:bg-secondary transition-all duration-150 ease-in-out active:bg-[#ffffff33] focus:bg-[#ffffff33]"
+                className="w-full flex items-center gap-6 px-4 py-2 text-sm font-medium text-white rounded-md focus:outline-none hover:bg-secondary transition-all duration-150 ease-in-out"
                 onClick={() =>
                   setOpenCategory(openCategory === index ? null : index)
                 }
@@ -47,7 +47,7 @@ const Sidebar = () => {
                 {category.subcategories.map((subcategory, subIndex) => (
                   <li key={subIndex}>
                     <NavLink to={subcategory.to} className="text-sm text-white">
-                      <button className="w-full my-2 rounded-md px-2 py-1 hover:bg-secondary transition-all duration-150 ease-in-out cursor-pointer active:bg-[#ffffff33] focus:bg-[#ffffff33] text-left">
+                      <button className="w-full my-2 rounded-md px-2 py-1 hover:bg-secondary transition-all duration-150 ease-in-out cursor-pointer text-left">
                         {subcategory.name}
                       </button>
                     </NavLink>
@@ -63,3 +63,5 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
+
+// active:bg-[#ffffff33] focus:bg-[#ffffff33]

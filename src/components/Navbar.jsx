@@ -1,7 +1,7 @@
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import sidebarCat from "../data/sidebarCat";
-import { useMemo } from "react";
+// import { useMemo } from "react";
 
 const Navbar = () => {
   const [openCategory, setOpenCategory] = useState(null);
