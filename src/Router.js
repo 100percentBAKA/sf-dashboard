@@ -9,6 +9,7 @@ import ResetForm from "./pages/forget/ResetForm";
 import FileUpload from "./pages/FileUpload";
 import ExcelUpload from "./pages/ExcelUpload";
 import Categories from "./pages/Categories";
+import PageNotFound from "./pages/404";
 
 const router = createBrowserRouter([
     {
@@ -57,6 +58,10 @@ const router = createBrowserRouter([
             },
         ],
     },
+    {
+        path: "*",
+        element: <PageNotFound />
+    }
 ]);
 
 export default router;
