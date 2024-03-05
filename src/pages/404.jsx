@@ -4,7 +4,7 @@ const PageNotFound = () => {
   const navigate = useNavigate();
 
   const handleBackClick = () => {
-    navigate("/app/dashboard");
+    navigate(-1);
   };
 
   return (
