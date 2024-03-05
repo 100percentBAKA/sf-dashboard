@@ -1,16 +1,11 @@
 import { useState } from "react";
-
-const tableData = [
-  { id: 1, name: "image1", imageUrl: "" },
-  { id: 2, name: "image2", imageUrl: "" },
-  { id: 3, name: "image3", imageUrl: "" },
-];
+import categories from "../data/categories";
 
 const Categories = () => {
   const [currentCategoryName, setCurrentCategoryName] = useState("");
 
   const handleUpdate = (id) => {
-    const category = tableData.find((item) => item.id === id);
+    const category = categories.find((item) => item.id === id);
     if (category) {
       setCurrentCategoryName(category.name);
       document.getElementById("update_cat_modal").showModal();
@@ -125,11 +120,11 @@ const Categories = () => {
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
-          {tableData.map((item) => (
+          {categories.map((item) => (
             <tr key={item.id}>
               <td className="px-6 py-4 whitespace-nowrap">
                 <img
-                  className="h-10 w-10 rounded-full"
+                  className="h-10 w-10 rounded-full object-cover"
                   src={item.imageUrl}
                   alt=""
                 />

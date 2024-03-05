@@ -1,0 +1,3 @@
+.error-display {
+  @apply text-[13px] text-red-500;
+}
