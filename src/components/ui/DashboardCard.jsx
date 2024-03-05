@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 
 const DashboardCard = ({ category, number, svg }) => {
   return (
-    <div className="bg-white shadow-lg p-6 flex items-center justify-between rounded-lg w-[300px] 2xl:w-[380px]">
+    <div className="bg-white shadow-lg p-6 flex items-center justify-between rounded-lg w-[280px] 2xl:w-[350px]">
       <div className="flex flex-col space-y-2">
         <div className="text-[18px] font-semibold">{category}</div>
         <div className="text-[18px] font-semibold">{number}</div>
