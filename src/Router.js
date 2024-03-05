@@ -10,6 +10,8 @@ import FileUpload from "./pages/FileUpload";
 import ExcelUpload from "./pages/ExcelUpload";
 import Categories from "./pages/Categories";
 import PageNotFound from "./pages/404";
+import SubCategories from "./pages/SubCategories";
+import SubToSubCategories from "./pages/SubToSubCategories";
 
 const router = createBrowserRouter([
     {
@@ -28,6 +30,14 @@ const router = createBrowserRouter([
             {
                 path: "categories",
                 element: <Categories />,
+            },
+            {
+                path: "sub-categories",
+                element: <SubCategories />
+            },
+            {
+                path: "sub-sub-categories",
+                element: <SubToSubCategories />
             },
             {
                 path: "file-upload",
