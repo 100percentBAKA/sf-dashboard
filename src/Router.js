@@ -10,8 +10,11 @@ import FileUpload from "./pages/FileUpload";
 import ExcelUpload from "./pages/ExcelUpload";
 import Categories from "./pages/Categories";
 import PageNotFound from "./pages/404";
-import SubCategories from "./pages/SubCategories";
-import SubToSubCategories from "./pages/SubToSubCategories";
+import SubCategories from "./pages/subCategories/SubCategories";
+import SubToSubCategories from "./pages/subSubCategories/SubToSubCategories";
+import Author from "./pages/forget/Author";
+import AddSC from "./pages/subCategories/AddSC"
+import AddS2SC from "./pages/subSubCategories/AddS2SC";
 
 const router = createBrowserRouter([
     {
@@ -36,8 +39,16 @@ const router = createBrowserRouter([
                 element: <SubCategories />
             },
             {
+                path: "sub-categories/add",
+                element: <AddSC />
+            },
+            {
                 path: "sub-sub-categories",
                 element: <SubToSubCategories />
+            },
+            {
+                path: "sub-sub-categories/add",
+                element: <AddS2SC />
             },
             {
                 path: "file-upload",
@@ -47,6 +58,10 @@ const router = createBrowserRouter([
                 path: "excel-upload",
                 element: <ExcelUpload />,
             },
+            {
+                path: "author",
+                element: <Author />
+            }
         ],
     },
     {
