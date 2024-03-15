@@ -37,6 +37,12 @@ const sidebarCat = [
         subcategories: [],
     },
     {
+        name: "Author",
+        icon: <FaUser />,
+        to: "/app/author",
+        subcategories: []
+    },
+    {
         name: "File Upload",
         to: "/app/file-upload",
         icon: <FaPage4 />,
@@ -91,7 +97,7 @@ const sidebarCat = [
     },
     {
         name: "Logout",
-        to: "",
+        to: "/",
         icon: <FaUser />,
         subcategories: [],
     },
