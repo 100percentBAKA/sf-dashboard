@@ -1,5 +1,5 @@
 import { useState } from "react";
-import authorData from "../../data/authors";
+import authorData from "../data/authors";
 
 const Author = () => {
   const [currentAuthorName, setCurrentAuthorName] = useState("");

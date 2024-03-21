@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createBrowserRouter, redirect } from "react-router-dom";
 import Root from "./pages/Root";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
@@ -12,18 +12,47 @@ import Categories from "./pages/Categories";
 import PageNotFound from "./pages/404";
 import SubCategories from "./pages/subCategories/SubCategories";
 import SubToSubCategories from "./pages/subSubCategories/SubToSubCategories";
-import Author from "./pages/forget/Author";
+import Author from "./pages/Author";
 import AddSC from "./pages/subCategories/AddSC"
 import AddS2SC from "./pages/subSubCategories/AddS2SC";
+import Register from "./pages/Register";
+import AuthRoot from "./pages/AuthRoot";
+
+//! handle auth check here
+// const is_auth = false;
+
+// const rootLoader = () => {
+//     return is_auth ? redirect("/app/dashboard") : redirect('/auth/login')
+// }
+
+// const appLoader = () => {
+//     return is_auth ? null : redirect('/auth/login')
+// }
 
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <Login />,
+        element: <div>Redirecting . . . </div>,
+        // loader: rootLoader
+    },
+    {
+        path: "/auth",
+        element: <AuthRoot />,
+        children: [
+            {
+                path: "login",
+                element: <Login />,
+            },
+            {
+                path: "register",
+                element: <Register />
+            }
+        ]
     },
     {
         path: "/app",
         element: <Root />,
+        // loader: appLoader,
         children: [
             {
                 path: "dashboard",
