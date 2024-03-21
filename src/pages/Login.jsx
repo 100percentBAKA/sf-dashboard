@@ -2,9 +2,12 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 import { Link, useNavigate } from "react-router-dom";
 
-// LOGIN SCHEMA
+//* DEBUG
+const debug = true;
+
+//* LOGIN SCHEMA
 const LOGIN_SCHEMA = yup.object().shape({
-  usernameEmail: yup.string().required("Username or Email is required"),
+  username: yup.string().required("Username is required"),
   password: yup.string().required("Password is required"),
 });
 
@@ -30,14 +33,10 @@ const Login = () => {
     validationSchema: LOGIN_SCHEMA,
 
     onSubmit: (values) => {
-      console.log(values);
-      navigate("/");
+      debug && console.log(values);
+      navigate("/app/dashboard");
     },
   });
-
-  const handleSubmit = () => {
-    navigate("/app/dashboard");
-  };
 
   return (
     <div className="flex items-center justify-center">
@@ -52,6 +51,7 @@ const Login = () => {
           <div>Username</div>
           <div>
             <StyledInputText
+              type="text"
               name="username"
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -82,6 +82,7 @@ const Login = () => {
               </div>
             ) : null}
           </div>
+
           <div className="flex items-center justify-between">
             <div className="flex gap-2 items-center">
               <input
@@ -99,11 +100,7 @@ const Login = () => {
         </div>
 
         {/* sign in */}
-        <button
-          type="submit"
-          className="btn btn-primary"
-          onClick={handleSubmit}
-        >
+        <button className="btn btn-primary" type="submit">
           Sign In
         </button>
       </form>
