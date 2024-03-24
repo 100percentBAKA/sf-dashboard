@@ -31,7 +31,7 @@ const OtpForm = () => {
   }, [activeOTPIndex]);
 
   const handleVerifyClick = () => {
-    navigate("/forget/reset");
+    navigate("/auth/forget/reset");
   };
 
   return (

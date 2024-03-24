@@ -1,4 +1,10 @@
+const debug = true;
+
 const ResetForm = () => {
+  const handleResetClick = () => {
+    debug && console.log("Reset click");
+  };
+
   return (
     <div className="bg-white p-6 lg:p-10 xl:p-12 flex flex-col gap-6 rounded-[10px]">
       <div className="flex flex-col gap-2">
@@ -22,7 +28,9 @@ const ResetForm = () => {
         />
       </div>
 
-      <button className="btn btn-primary">Reset</button>
+      <button className="btn btn-primary" onClick={handleResetClick}>
+        Reset
+      </button>
     </div>
   );
 };

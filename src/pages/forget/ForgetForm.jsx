@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 const ForgetForm = () => {
   const navigate = useNavigate();
   const handleResetBtnClick = () => {
-    navigate("/forget/otp");
+    navigate("/auth/forget/otp");
   };
 
   return (
