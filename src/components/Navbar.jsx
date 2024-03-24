@@ -1,11 +1,12 @@
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useMemo, useState } from "react";
 import sidebarCat from "../data/sidebarCat";
-// import { useMemo } from "react";
+import { useAuth } from "../context/AuthContext";
 
 const Navbar = () => {
   const [openCategory, setOpenCategory] = useState(null);
   const { pathname } = useLocation();
+  const { logout } = useAuth();
   const navigate = useNavigate();
 
   const breadcrumbs = useMemo(() => {
@@ -19,7 +20,8 @@ const Navbar = () => {
   }, [pathname]);
 
   const handleLogout = () => {
-    navigate("/");
+    logout();
+    navigate("/auth/login");
   };
 
   return (
