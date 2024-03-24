@@ -14,3 +14,8 @@ export async function registerAdmin(body) {
 export async function loginAdmin(body) {
     return await axiosInstance.post("admin-signin", body)
 }
+
+// * forgot
+export async function forgetAdmin(body) {
+    return await axiosInstance.post("admin-forgot-password", body)
+}

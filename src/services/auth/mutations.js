@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query"
-import { loginAdmin, registerAdmin } from "./apis"
+import { forgetAdmin, loginAdmin, registerAdmin } from "./apis"
 
 export function useRegisterMutation() {
     return useMutation({
@@ -10,5 +10,11 @@ export function useRegisterMutation() {
 export function useLoginMutation() {
     return useMutation({
         mutationFn: (body) => loginAdmin(body)
+    })
+}
+
+export function useForgotMutation() {
+    return useMutation({
+        mutationFn: (body) => forgetAdmin(body)
     })
 }
