@@ -1,4 +1,4 @@
-import { createBrowserRouter, redirect } from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import Root from "./pages/Root";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
@@ -13,31 +13,24 @@ import PageNotFound from "./pages/404";
 import SubCategories from "./pages/subCategories/SubCategories";
 import SubToSubCategories from "./pages/subSubCategories/SubToSubCategories";
 import Author from "./pages/Author";
-import AddSC from "./pages/subCategories/AddSC"
+import AddSC from "./pages/subCategories/AddSC";
 import AddS2SC from "./pages/subSubCategories/AddS2SC";
 import Register from "./pages/Register";
 import AuthRoot from "./pages/AuthRoot";
-
-//! handle auth check here
-// const is_auth = false;
-
-// const rootLoader = () => {
-//     return is_auth ? redirect("/app/dashboard") : redirect('/auth/login')
-// }
-
-// const appLoader = () => {
-//     return is_auth ? null : redirect('/auth/login')
-// }
+import { ProtectedRoute1, ProtectedRoute2, ProtectedRoute3 } from "./components/ProtectedRoute";
 
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <div>Redirecting . . . </div>,
-        // loader: rootLoader
+        element: <ProtectedRoute3 />,
     },
     {
         path: "/auth",
-        element: <AuthRoot />,
+        element: (
+            <ProtectedRoute2>
+                <AuthRoot />
+            </ProtectedRoute2>
+        ),
         children: [
             {
                 path: "login",
@@ -45,14 +38,17 @@ const router = createBrowserRouter([
             },
             {
                 path: "register",
-                element: <Register />
-            }
-        ]
+                element: <Register />,
+            },
+        ],
     },
     {
         path: "/app",
-        element: <Root />,
-        // loader: appLoader,
+        element: (
+            <ProtectedRoute1>
+                <Root />
+            </ProtectedRoute1>
+        ),
         children: [
             {
                 path: "dashboard",
@@ -65,19 +61,19 @@ const router = createBrowserRouter([
             },
             {
                 path: "sub-categories",
-                element: <SubCategories />
+                element: <SubCategories />,
             },
             {
                 path: "sub-categories/add",
-                element: <AddSC />
+                element: <AddSC />,
             },
             {
                 path: "sub-sub-categories",
-                element: <SubToSubCategories />
+                element: <SubToSubCategories />,
             },
             {
                 path: "sub-sub-categories/add",
-                element: <AddS2SC />
+                element: <AddS2SC />,
             },
             {
                 path: "file-upload",
@@ -89,33 +85,33 @@ const router = createBrowserRouter([
             },
             {
                 path: "author",
-                element: <Author />
-            }
+                element: <Author />,
+            },
         ],
     },
     {
-        path: "/forget",
+        path: "/auth/forget",
         element: <ForgetPasswordRoot />,
         children: [
             {
-                path: "/forget",
+                path: "/auth/forget",
                 element: <ForgetForm />,
                 index: true,
             },
             {
-                path: "otp",
+                path: "/auth/forget/otp",
                 element: <OtpForm />,
             },
             {
-                path: "reset",
+                path: "/auth/forget/reset",
                 element: <ResetForm />,
             },
         ],
     },
     {
         path: "*",
-        element: <PageNotFound />
-    }
+        element: <PageNotFound />,
+    },
 ]);
 
 export default router;
