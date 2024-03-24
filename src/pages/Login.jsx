@@ -26,7 +26,7 @@ const StyledInputText = ({ ...props }) => {
 
 const Login = () => {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, persist, setPersist } = useAuth();
 
   // * custom login mutation hook
   const loginMutation = useLoginMutation();
@@ -58,18 +58,17 @@ const Login = () => {
           if (data) {
             // ! use login method through out auth
             login(data.data.access, data.data.refresh);
-            debug &&
-              console.log(
-                `access token: ${localStorage.getItem(
-                  "access_token"
-                )} refresh token: ${localStorage.getItem("refresh_token")}`
-              );
           }
           navigate("/app/dashboard");
         },
       });
     },
   });
+
+  const handleCheckBoxChange = (event) => {
+    debug && console.log(event.target.checked);
+    setPersist(event.target.checked);
+  };
 
   return (
     <div className="flex items-center justify-center">
@@ -121,8 +120,9 @@ const Login = () => {
             <div className="flex gap-2 items-center">
               <input
                 type="checkbox"
-                // defaultChecked
+                checked={persist}
                 className="checkbox checkbox-xs"
+                onChange={(e) => handleCheckBoxChange(e)}
               />
               <div className="text-[14px]">Remember me</div>
             </div>

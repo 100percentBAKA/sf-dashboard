@@ -48,7 +48,7 @@ const REGISTER_SCHEMA = yup.object().shape({
 
 const Register = () => {
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, persist, setPersist } = useAuth();
 
   // * custom register mutation hook
   const registerMutation = useRegisterMutation();
@@ -83,18 +83,17 @@ const Register = () => {
           if (data) {
             // ! use login method through out auth
             login(data.data.access, data.data.refresh);
-            debug &&
-              console.log(
-                `access token: ${localStorage.getItem(
-                  "access_token"
-                )} refresh token: ${localStorage.getItem("refresh_token")}`
-              );
           }
           navigate("/app/dashboard");
         },
       });
     },
   });
+
+  const handleCheckBoxChange = (event) => {
+    debug && console.log(event.target.checked);
+    setPersist(event.target.checked);
+  };
 
   return (
     <div className="flex items-center justify-center">
@@ -186,7 +185,12 @@ const Register = () => {
 
         {/* Remember me */}
         <div className="flex gap-2 items-center">
-          <input type="checkbox" className="checkbox checkbox-xs" />
+          <input
+            type="checkbox"
+            checked={persist}
+            className="checkbox checkbox-xs"
+            onChange={(e) => handleCheckBoxChange(e)}
+          />
           <div className="text-[14px]">Remember me</div>
         </div>
 
