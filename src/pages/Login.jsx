@@ -1,6 +1,9 @@
 import { useFormik } from "formik";
 import * as yup from "yup";
 import { Link, useNavigate } from "react-router-dom";
+import { useLoginMutation } from "../services/auth/mutations";
+import toast from "react-hot-toast";
+import { useAuth } from "../context/AuthContext";
 
 //* DEBUG
 const debug = true;
@@ -23,6 +26,10 @@ const StyledInputText = ({ ...props }) => {
 
 const Login = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
+
+  // * custom login mutation hook
+  const loginMutation = useLoginMutation();
 
   const formik = useFormik({
     initialValues: {
@@ -32,9 +39,35 @@ const Login = () => {
 
     validationSchema: LOGIN_SCHEMA,
 
-    onSubmit: (values) => {
-      debug && console.log(values);
-      navigate("/app/dashboard");
+    onSubmit: () => {
+      const loginData = {
+        username: formik.values.username,
+        password: formik.values.password,
+      };
+      debug && console.log(loginData);
+
+      loginMutation.mutate(loginData, {
+        onError: (data) => {
+          debug && console.log(data);
+          if (data) toast.error(data.message);
+        },
+
+        onSuccess: (data) => {
+          debug && console.log(data);
+          toast.success(data.data.Success);
+          if (data) {
+            // ! use login method through out auth
+            login(data.data.access, data.data.refresh);
+            debug &&
+              console.log(
+                `access token: ${localStorage.getItem(
+                  "access_token"
+                )} refresh token: ${localStorage.getItem("refresh_token")}`
+              );
+          }
+          navigate("/app/dashboard");
+        },
+      });
     },
   });
 
@@ -83,11 +116,12 @@ const Login = () => {
             ) : null}
           </div>
 
+          {/* remember me */}
           <div className="flex items-center justify-between">
             <div className="flex gap-2 items-center">
               <input
                 type="checkbox"
-                defaultChecked
+                // defaultChecked
                 className="checkbox checkbox-xs"
               />
               <div className="text-[14px]">Remember me</div>
@@ -100,9 +134,23 @@ const Login = () => {
         </div>
 
         {/* sign in */}
-        <button className="btn btn-primary" type="submit">
-          Sign In
-        </button>
+        <div className="flex flex-col items-center space-y-2">
+          <button className="btn btn-primary w-full" type="submit">
+            {loginMutation.isPending ? (
+              <div className="loading loading-spinner loading-md"></div>
+            ) : (
+              <div>Sign In</div>
+            )}
+          </button>
+
+          {/* go to sign up */}
+          <Link
+            className="text-[14px] text-center underline"
+            to="/auth/register"
+          >
+            Yet to Register ?
+          </Link>
+        </div>
       </form>
     </div>
   );

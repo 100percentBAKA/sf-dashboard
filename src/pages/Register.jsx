@@ -1,10 +1,13 @@
 // import { Link } from "react-router-dom";
 import { useFormik } from "formik";
 import PropTypes from "prop-types";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import * as yup from "yup";
+import toast from "react-hot-toast";
+import { useRegisterMutation } from "../services/auth/mutations";
+import { useAuth } from "../context/AuthContext";
 
-//* DEBUG
+//* DEBUG MODE
 const debug = true;
 
 const StyledInput = ({ type, ...props }) => {
@@ -30,6 +33,7 @@ const REGISTER_SCHEMA = yup.object().shape({
   username: yup.string().required("Username is required"),
   phone: yup
     .string()
+    .max(10, "Enter your 10 digits phone number")
     .matches(/^[0-9]{10}$/, "Phone number must be exactly 10 digits")
     .required("Phone number is required"),
   password: yup
@@ -44,6 +48,10 @@ const REGISTER_SCHEMA = yup.object().shape({
 
 const Register = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
+
+  // * custom register mutation hook
+  const registerMutation = useRegisterMutation();
 
   const formik = useFormik({
     initialValues: {
@@ -56,8 +64,35 @@ const Register = () => {
     validationSchema: REGISTER_SCHEMA,
 
     onSubmit: () => {
-      debug && console.log(formik.values);
-      navigate("/app/dashboard");
+      const registerData = {
+        username: formik.values.username,
+        password: formik.values.password,
+        phone_number: formik.values.phone,
+      };
+      debug && console.log(registerData);
+
+      registerMutation.mutate(registerData, {
+        onError: (data) => {
+          debug && console.log(data);
+          if (data) toast.error(data.message);
+        },
+
+        onSuccess: (data) => {
+          debug && console.log(data);
+          toast.success(data.data.Success);
+          if (data) {
+            // ! use login method through out auth
+            login(data.data.access, data.data.refresh);
+            debug &&
+              console.log(
+                `access token: ${localStorage.getItem(
+                  "access_token"
+                )} refresh token: ${localStorage.getItem("refresh_token")}`
+              );
+          }
+          navigate("/app/dashboard");
+        },
+      });
     },
   });
 
@@ -151,18 +186,25 @@ const Register = () => {
 
         {/* Remember me */}
         <div className="flex gap-2 items-center">
-          <input
-            type="checkbox"
-            defaultChecked
-            className="checkbox checkbox-xs"
-          />
+          <input type="checkbox" className="checkbox checkbox-xs" />
           <div className="text-[14px]">Remember me</div>
         </div>
 
         {/* sign up */}
-        <button type="submit" className="btn btn-primary">
-          Sign Up
-        </button>
+        <div className="flex flex-col items-center space-y-2">
+          <button type="submit" className="btn btn-primary w-full">
+            {registerMutation.isPending ? (
+              <div className="loading loading-spinner loading-md"></div>
+            ) : (
+              <div>Sign Up</div>
+            )}
+          </button>
+
+          {/* go to sign up */}
+          <Link className="text-[14px] text-center underline" to="/auth/login">
+            Yet to Login ?
+          </Link>
+        </div>
       </form>
     </div>
   );
