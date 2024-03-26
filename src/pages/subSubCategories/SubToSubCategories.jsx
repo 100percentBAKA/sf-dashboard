@@ -27,6 +27,12 @@ const SubToSubCategories = () => {
               scope="col"
               className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
             >
+              Image
+            </th>
+            <th
+              scope="col"
+              className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+            >
               Name
             </th>
             <th
@@ -46,6 +52,13 @@ const SubToSubCategories = () => {
         <tbody className="bg-white divide-y divide-gray-200">
           {sub2SubCategoryData.map((item) => (
             <tr key={item.id}>
+              <td className="px-6 py-4 whitespace-nowrap">
+                <img
+                  className="h-10 w-10 rounded-full object-cover"
+                  src={item.imageUrl}
+                  alt=""
+                />
+              </td>
               <td className="px-6 py-4 whitespace-nowrap">{item.name}</td>
               <td className="px-6 py-4 whitespace-nowrap">
                 <button

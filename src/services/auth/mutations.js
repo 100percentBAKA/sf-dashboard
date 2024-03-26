@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query"
-import { forgetAdmin, loginAdmin, registerAdmin } from "./apis"
+import { forgetAdmin, getPhoneNumber, loginAdmin, registerAdmin, resetPassword, verifyOTP } from "./apis"
 
 export function useRegisterMutation() {
     return useMutation({
@@ -16,5 +16,23 @@ export function useLoginMutation() {
 export function useForgotMutation() {
     return useMutation({
         mutationFn: (body) => forgetAdmin(body)
+    })
+}
+
+export function useVerifyOTPMutation() {
+    return useMutation({
+        mutationFn: (body) => verifyOTP(body)
+    })
+}
+
+export function useResetMutation() {
+    return useMutation({
+        mutationFn: (body) => resetPassword(body)
+    })
+}
+
+export function usePhoneMutation() {
+    return useMutation({
+        mutationFn: (body) => getPhoneNumber(body)
     })
 }

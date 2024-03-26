@@ -1,6 +1,5 @@
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
-import styles from "../../assets/styles/Categories.module.css";
 
 // Define a validation schema
 const SubToSubCategoriesSchema = Yup.object().shape({
@@ -46,7 +45,9 @@ const AddS2SC = () => {
                 {/* Add your categories here */}
               </Field>
               {errors.category && touched.category ? (
-                <div className={styles["error-display"]}>{errors.category}</div>
+                <div className="text-[12px] text-red-500">
+                  {errors.category}
+                </div>
               ) : null}
             </div>
 
@@ -69,7 +70,7 @@ const AddS2SC = () => {
                 {/* Add your sub categories here */}
               </Field>
               {errors.subCategory && touched.subCategory ? (
-                <div className={styles["error-display"]}>
+                <div className="text-[12px] text-red-500">
                   {errors.subCategory}
                 </div>
               ) : null}
@@ -89,7 +90,7 @@ const AddS2SC = () => {
                 className="input w-full"
               />
               {errors.subToSubCategoryName && touched.subToSubCategoryName ? (
-                <div className={styles["error-display"]}>
+                <div className="text-[12px] text-red-500">
                   {errors.subToSubCategoryName}
                 </div>
               ) : null}

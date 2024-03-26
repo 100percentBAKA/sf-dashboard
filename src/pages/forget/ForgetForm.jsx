@@ -3,9 +3,13 @@ import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { useForgotMutation } from "../../services/auth/mutations";
 import toast from "react-hot-toast";
+import { useStore } from "../../stores/store";
 
 // * DEBUG MODE
 const debug = true;
+
+// * GENERIC OTP REASON
+const reason = "reset password";
 
 const FORGOT_SCHEMA = yup.object().shape({
   username: yup.string().required("Username is required"),
@@ -14,6 +18,9 @@ const FORGOT_SCHEMA = yup.object().shape({
 const ForgetForm = () => {
   const navigate = useNavigate();
   const forgotMutation = useForgotMutation();
+
+  // * zustand store
+  const setUsername = useStore((state) => state.setUsername);
 
   const formik = useFormik({
     initialValues: {
@@ -24,7 +31,7 @@ const ForgetForm = () => {
     onSubmit: () => {
       debug && console.log(formik.values);
       forgotMutation.mutate(
-        { username: formik.values.username },
+        { username: formik.values.username, reason: reason },
         {
           onError: (data) => {
             debug && console.log(data);
@@ -34,6 +41,7 @@ const ForgetForm = () => {
           onSuccess: (data) => {
             debug && console.log(data?.data.Success);
             if (data) toast.success(data.data.Success);
+            setUsername(formik.values.username);
             navigate("/auth/forget/otp");
           },
         }
@@ -53,14 +61,22 @@ const ForgetForm = () => {
       <div>
         <div className="flex flex-col gap-2">
           <div>Username</div>
-          <input
-            type="text"
-            name="username"
-            className="rounded-[10px] h-[48px] w-[280px] bg-base-100 pl-4 lg:w-[350px] xl:w-[400px]"
-            value={formik.values.username}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
+
+          <div>
+            <input
+              type="text"
+              name="username"
+              className="rounded-[10px] h-[48px] w-[280px] bg-base-100 pl-4 lg:w-[350px] xl:w-[400px]"
+              value={formik.values.username}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+            />
+            {formik.touched.username && formik.errors.username ? (
+              <div className="">
+                {formik.errors.username}
+              </div>
+            ) : null}
+          </div>
         </div>
         <div className="divider">OR</div>
         <div className="flex flex-col gap-2">
@@ -75,7 +91,7 @@ const ForgetForm = () => {
       </div>
       <button className="btn btn-primary" type="submit">
         {forgotMutation.isPending ? (
-          <div className="loading loading-spinner loading-md"></div>
+          <div className="custom-spinner"></div>
         ) : (
           <div>Reset</div>
         )}

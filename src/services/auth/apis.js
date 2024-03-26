@@ -1,9 +1,6 @@
-import axios from "axios"
+import { axiosInstance } from "../apis_head"
 
-const BASE_URL = "http://13.233.65.5:8000/api/v2"
-const axiosInstance = axios.create({ baseURL: BASE_URL })
-
-//! AUTH
+//! AUTH APIS
 
 // * register
 export async function registerAdmin(body) {
@@ -17,5 +14,21 @@ export async function loginAdmin(body) {
 
 // * forgot
 export async function forgetAdmin(body) {
-    return await axiosInstance.post("admin-forgot-password", body)
+    return await axiosInstance.post("generate-otp", body)
+}
+
+// * verify otp
+export async function verifyOTP(body) {
+    return await axiosInstance.post("verify-otp", body)
+}
+
+// * retype password 
+export async function resetPassword(body) {
+    return await axiosInstance.post("admin-reset-password", body)
+}
+
+// * get phone number 
+export async function getPhoneNumber(body) {
+    return await axiosInstance.post
+    ("get-phone-number", body)
 }

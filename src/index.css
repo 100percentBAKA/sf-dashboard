@@ -10,3 +10,11 @@
     margin: 0;
   }
 }
+
+.custom-spinner {
+  @apply loading loading-spinner loading-md;
+}
+
+.custom-error {
+  @apply text-[12px] text-red-500;
+}

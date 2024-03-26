@@ -5,15 +5,15 @@ const tableData = [
 ];
 
 const subCategoryData = [
-    { id: 1, name: "subCategory1" },
-    { id: 2, name: "subCategory2" },
-    { id: 3, name: "subCategory3" },
+    { id: 1, name: "subCategory1", imageUrl: "" },
+    { id: 2, name: "subCategory2", imageUrl: "" },
+    { id: 3, name: "subCategory3", imageUrl: "" },
 ];
 
 const sub2SubCategoryData = [
-    { id: 1, name: "sub2SubCategory1" },
-    { id: 2, name: "sub2SubCategory2" },
-    { id: 3, name: "sub2SubCategory3" },
+    { id: 1, name: "sub2SubCategory1", imageUrl: "" },
+    { id: 2, name: "sub2SubCategory2", imageUrl: "" },
+    { id: 3, name: "sub2SubCategory3", imageUrl: "" },
 ];
 
 export { tableData, subCategoryData, sub2SubCategoryData }

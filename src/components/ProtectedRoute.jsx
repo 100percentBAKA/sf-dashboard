@@ -2,7 +2,7 @@ import { Navigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import { useAuth } from "../context/AuthContext";
 
-const debug = true;
+const debug = false;
 
 export const ProtectedRoute1 = ({ children }) => {
   const { isAuthenticated } = useAuth();
@@ -13,16 +13,16 @@ export const ProtectedRoute1 = ({ children }) => {
 export const ProtectedRoute2 = ({ children }) => {
   const { isAuthenticated } = useAuth();
   debug && console.log(isAuthenticated);
-  return isAuthenticated ? <Navigate to="/app/dashboard" replace /> : children;
+  return isAuthenticated ? <Navigate to="/app/dashboard" /> : children;
 };
 
 export const ProtectedRoute3 = () => {
   const { isAuthenticated } = useAuth();
-  debug && console.log(isAuthenticated);
+  debug && console.log(`is authenticated: ${isAuthenticated}`);
   return isAuthenticated ? (
-    <Navigate to="/app/dashboard" replace />
+    <Navigate to="/app/dashboard" />
   ) : (
-    <Navigate to="/auth/login" replace />
+    <Navigate to="/auth/login" />
   );
 };
 
