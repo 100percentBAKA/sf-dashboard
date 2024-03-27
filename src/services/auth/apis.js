@@ -29,6 +29,5 @@ export async function resetPassword(body) {
 
 // * get phone number 
 export async function getPhoneNumber(body) {
-    return await axiosInstance.post
-    ("get-phone-number", body)
+    return await axiosInstance.post("get-phone-number", body)
 }
