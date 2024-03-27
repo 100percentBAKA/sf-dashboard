@@ -1,26 +1,31 @@
-import React, { useState } from "react";
+import React from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  usePhoneMutation,
+  useForgotMutation,
   useVerifyOTPMutation,
 } from "../../services/auth/mutations";
 import toast from "react-hot-toast";
 import { useStore } from "../../stores/store";
+import LoadingModal from "../../components/ui/LoadingModal";
 
 // * DEBUG MODE
 const debug = true;
 
+// * GENERIC OTP REASON
+const reason = "reset password";
+
 const OtpForm = () => {
   const [otp, setOtp] = React.useState(new Array(6).fill(""));
   const [activeOTPIndex, setActiveOTPIndex] = React.useState(0);
-  const [phoneNo, setPhoneNo] = useState("+919876543210");
 
   // * obtain username from zustand store
   const username = useStore((state) => state.username);
+  const phoneNo = useStore((state) => state.phoneNo);
 
+  // * custom hooks to handle otp handling
   const otpMutation = useVerifyOTPMutation();
-  const phoneMutation = usePhoneMutation();
+  const forgotMutation = useForgotMutation();
 
   const inputRefs = React.useRef([]);
   const navigate = useNavigate();
@@ -42,7 +47,7 @@ const OtpForm = () => {
   const handleKeyDown = (e, index) => {
     // Handle backspace when the current box is empty, and there's a box before it.
     if (e.key === "Backspace" && !otp[index] && index > 0) {
-      e.preventDefault(); // Prevents deleting the character in the focused input
+      e.preventDefault();
       setActiveOTPIndex(index - 1);
     }
   };
@@ -53,35 +58,9 @@ const OtpForm = () => {
     }
   }, [activeOTPIndex]);
 
-  // useEffect(() => {
-  //   const handleUserPhoneNo = () => {
-  //     phoneMutation.mutate(
-  //       { username: username },
-  //       {
-  //         onError: () => {
-  //           debug && console.log("Error getting user phone number");
-  //         },
-
-  //         onSuccess: (data) => {
-  //           debug &&
-  //             console.log(`user phone number is: ${data?.data.phone_number}`);
-  //           if (data) setPhoneNo(data.data.phone_number);
-  //         },
-  //       }
-  //     );
-  //   };
-
-  //   handleUserPhoneNo();
-  // }, [setPhoneNo, phoneMutation, username]);
-
   // ! sending post request logic goes here . . .
   const handleVerifyClick = (e) => {
-    e.preventDefault(); // prevent form resubmission
-
-    if (!username) {
-      toast.error("Username is required.");
-      return;
-    }
+    e.preventDefault();
     debug && console.log(otp.join(""));
 
     const otpData = {
@@ -105,14 +84,33 @@ const OtpForm = () => {
     });
   };
 
+  const handleResendOTP = () => {
+    const resendData = {
+      username: username,
+      reason: reason,
+    };
+
+    forgotMutation.mutate(resendData, {
+      onError: (data) => {
+        debug && console.log(data);
+        if (data) toast.error(data.message);
+      },
+
+      onSuccess: (data) => {
+        debug && console.log(data);
+        if (data) toast.success(data.data.Success);
+      },
+    });
+  };
+
   return (
     <form className="bg-white p-6 lg:p-10 xl:p-12 flex flex-col gap-6 rounded-[10px] max-w-[450px]">
       <div className="flex flex-col gap-2">
         <div className="text-2xl font-semibold">Email Verification</div>
         <div>
-          OTP has been sent to {phoneNo.substring(0, 7)}
-          ****
-          {phoneNo.substring(8)}
+          OTP has been sent to {phoneNo.substring(0, 4)}
+          *****
+          {phoneNo.substring(9)}
         </div>
       </div>
 
@@ -121,13 +119,12 @@ const OtpForm = () => {
         {otp.map((_, index) => (
           <div className="w-16 h-16" key={index}>
             {" "}
-            {/* Adjusted size here */}
             <input
               ref={(el) => (inputRefs.current[index] = el)}
-              className="w-full h-full text-center text-2xl px-5 outline-none rounded-xl border border-gray-200 bg-white focus:bg-gray-50 focus:ring-1 ring-blue-700" // Adjusted font size here
-              type="text" // Changed to text to allow leading zeros
-              pattern="[0-9]*" // Ensure only numbers can be entered
-              inputMode="numeric" // Show numeric keyboard on mobile devices
+              className="w-full h-full text-center text-2xl px-5 outline-none rounded-xl border border-gray-200 bg-white focus:bg-gray-50 focus:ring-1 ring-blue-700"
+              type="text"
+              pattern="[0-9]*"
+              inputMode="numeric"
               onChange={(e) => handleChange(index, e.target.value)}
               onKeyDown={(e) => handleKeyDown(e, index)}
               value={otp[index]}
@@ -147,8 +144,15 @@ const OtpForm = () => {
 
       <div className="text-center">
         Didn&apos;t receive OTP?{" "}
-        <span className="text-secondary cursor-pointer">Resend</span>
+        <span
+          className="text-secondary cursor-pointer"
+          onClick={handleResendOTP}
+        >
+          Resend
+        </span>
       </div>
+
+      <LoadingModal pending={forgotMutation.isPending} />
     </form>
   );
 };

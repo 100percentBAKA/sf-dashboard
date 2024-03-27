@@ -1,7 +1,10 @@
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
-import { useForgotMutation } from "../../services/auth/mutations";
+import {
+  useForgotMutation,
+  usePhoneMutation,
+} from "../../services/auth/mutations";
 import toast from "react-hot-toast";
 import { useStore } from "../../stores/store";
 
@@ -17,10 +20,14 @@ const FORGOT_SCHEMA = yup.object().shape({
 
 const ForgetForm = () => {
   const navigate = useNavigate();
+
+  //* custom hooks for api handling
   const forgotMutation = useForgotMutation();
+  const phoneMutation = usePhoneMutation();
 
   // * zustand store
   const setUsername = useStore((state) => state.setUsername);
+  const setPhoneNo = useStore((state) => state.setPhoneNo);
 
   const formik = useFormik({
     initialValues: {
@@ -29,23 +36,40 @@ const ForgetForm = () => {
     validationSchema: FORGOT_SCHEMA,
 
     onSubmit: () => {
-      debug && console.log(formik.values);
-      forgotMutation.mutate(
-        { username: formik.values.username, reason: reason },
-        {
-          onError: (data) => {
-            debug && console.log(data);
-            if (data) toast.error(data.message);
-          },
+      const forgetData = {
+        username: formik.values.username,
+        reason: reason,
+      };
 
-          onSuccess: (data) => {
-            debug && console.log(data?.data.Success);
-            if (data) toast.success(data.data.Success);
-            setUsername(formik.values.username);
-            navigate("/auth/forget/otp");
-          },
-        }
-      );
+      forgotMutation.mutate(forgetData, {
+        onError: (data) => {
+          debug && console.log(data);
+          if (data) toast.error(data.message);
+        },
+
+        onSuccess: async (data) => {
+          debug && console.log(data?.data.Success);
+
+          // ! get user phone number
+          await phoneMutation.mutateAsync(
+            { username: formik.values.username },
+            {
+              onError: () => {
+                debug && console.log("Error getting user phoneNo");
+              },
+              onSuccess: (data) => {
+                debug &&
+                  console.log(`User phone no: ${data?.data.phone_number}`);
+                if (data) setPhoneNo(data.data.phone_number);
+              },
+            }
+          );
+
+          if (data) toast.success(data.data.Success);
+          setUsername(formik.values.username);
+          navigate("/auth/forget/otp");
+        },
+      });
     },
   });
 
@@ -72,9 +96,7 @@ const ForgetForm = () => {
               onBlur={formik.handleBlur}
             />
             {formik.touched.username && formik.errors.username ? (
-              <div className="">
-                {formik.errors.username}
-              </div>
+              <div className="custom-error">{formik.errors.username}</div>
             ) : null}
           </div>
         </div>
