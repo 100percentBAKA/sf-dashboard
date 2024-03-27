@@ -206,7 +206,7 @@ const Register = () => {
 
           {/* go to sign up */}
           <Link className="text-[14px] text-center underline" to="/auth/login">
-            Yet to Login ?
+            Already Registered ?
           </Link>
         </div>
       </form>
