@@ -18,3 +18,7 @@
 .custom-error {
   @apply text-[12px] text-red-500;
 }
+
+.custom-link {
+  @apply text-[14px] text-center underline;
+}
