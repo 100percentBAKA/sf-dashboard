@@ -49,7 +49,7 @@ const Login = () => {
       loginMutation.mutate(loginData, {
         onError: (data) => {
           debug && console.log(data);
-          if (data) toast.error(data.message);
+          if (data) toast.error(data.response.data.ERROR);
         },
 
         onSuccess: (data) => {
@@ -144,10 +144,7 @@ const Login = () => {
           </button>
 
           {/* go to sign up */}
-          <Link
-            className="text-[14px] text-center underline"
-            to="/auth/register"
-          >
+          <Link className="custom-link" to="/auth/register">
             Yet to Register ?
           </Link>
         </div>

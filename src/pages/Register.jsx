@@ -67,7 +67,7 @@ const Register = () => {
       const registerData = {
         username: formik.values.username,
         password: formik.values.password,
-        phone_number: formik.values.phone,
+        phone_number: `+91${formik.values.phone}`,
       };
       debug && console.log(registerData);
 

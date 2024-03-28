@@ -3,7 +3,7 @@ import * as yup from "yup";
 import { useResetMutation } from "../../services/auth/mutations";
 import { useStore } from "../../stores/store";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const debug = true;
 
@@ -104,13 +104,18 @@ const ResetForm = () => {
         </div>
       </div>
 
-      <button className="btn btn-primary" type="submit">
-        {resetMutation.isPending ? (
-          <div className="custom-spinner"></div>
-        ) : (
-          <div>Reset</div>
-        )}
-      </button>
+      <div className="flex flex-col items-center space-y-2">
+        <button className="btn btn-primary w-full" type="submit">
+          {resetMutation.isPending ? (
+            <div className="custom-spinner"></div>
+          ) : (
+            <div>Reset</div>
+          )}
+        </button>
+        <Link to="/auth/login" className="custom-link">
+          Back to login
+        </Link>
+      </div>
     </form>
   );
 };

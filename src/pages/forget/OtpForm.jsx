@@ -1,6 +1,6 @@
 import React from "react";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   useForgotMutation,
   useVerifyOTPMutation,
@@ -134,13 +134,18 @@ const OtpForm = () => {
         ))}
       </div>
 
-      <button className="btn btn-primary" onClick={handleVerifyClick}>
-        {otpMutation.isPending ? (
-          <div className="custom-spinner"></div>
-        ) : (
-          <div>Verify Account</div>
-        )}
-      </button>
+      <div className="flex flex-col items-center space-y-2">
+        <button className="btn btn-primary w-full" onClick={handleVerifyClick}>
+          {otpMutation.isPending ? (
+            <div className="custom-spinner"></div>
+          ) : (
+            <div>Verify Account</div>
+          )}
+        </button>
+        <Link to="/auth/login" className="custom-link">
+          Back to login
+        </Link>
+      </div>
 
       <div className="text-center">
         Didn&apos;t receive OTP?{" "}

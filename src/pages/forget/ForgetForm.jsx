@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import {
   useForgotMutation,
@@ -21,7 +21,7 @@ const FORGOT_SCHEMA = yup.object().shape({
 const ForgetForm = () => {
   const navigate = useNavigate();
 
-  //* custom hooks for api handling
+  // * custom hooks for api handling
   const forgotMutation = useForgotMutation();
   const phoneMutation = usePhoneMutation();
 
@@ -44,9 +44,9 @@ const ForgetForm = () => {
       forgotMutation.mutate(forgetData, {
         onError: (data) => {
           debug && console.log(data);
-          if (data) toast.error(data.message);
+          if (data) toast.error(data.response.data.ERROR);
         },
-
+        
         onSuccess: async (data) => {
           debug && console.log(data?.data.Success);
 
@@ -100,7 +100,9 @@ const ForgetForm = () => {
             ) : null}
           </div>
         </div>
+
         <div className="divider">OR</div>
+
         <div className="flex flex-col gap-2">
           <div>Phone Number</div>
           <input
@@ -111,13 +113,19 @@ const ForgetForm = () => {
           />
         </div>
       </div>
-      <button className="btn btn-primary" type="submit">
-        {forgotMutation.isPending ? (
-          <div className="custom-spinner"></div>
-        ) : (
-          <div>Reset</div>
-        )}
-      </button>
+
+      <div className="flex flex-col items-center space-y-2">
+        <button className="btn btn-primary w-full" type="submit">
+          {forgotMutation.isPending ? (
+            <div className="custom-spinner"></div>
+          ) : (
+            <div>Reset</div>
+          )}
+        </button>
+        <Link to="/auth/login" className="custom-link">
+          Back to login
+        </Link>
+      </div>
     </form>
   );
 };
