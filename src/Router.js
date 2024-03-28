@@ -14,6 +14,7 @@ import SubCategories from "./pages/subCategories/SubCategories";
 import SubToSubCategories from "./pages/subSubCategories/SubToSubCategories";
 import Author from "./pages/Author";
 import AddSC from "./pages/subCategories/AddSC";
+import UpdateSC from './pages/subCategories/UpdateSC'
 import AddS2SC from "./pages/subSubCategories/AddS2SC";
 import Register from "./pages/Register";
 import AuthRoot from "./pages/AuthRoot";
@@ -66,6 +67,10 @@ const router = createBrowserRouter([
             {
                 path: "sub-categories/add",
                 element: <AddSC />,
+            },
+            {
+                path: "sub-categories/update",
+                element: <UpdateSC />,
             },
             {
                 path: "sub-sub-categories",
