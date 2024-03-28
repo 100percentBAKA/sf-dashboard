@@ -1,12 +1,30 @@
-import { sub2SubCategoryData } from "../../data/categories";
+import LoadingModal from "../../components/ui/LoadingModal";
+import ErrorDisplay from "../../components/ui/ErrorDisplay";
 import { useNavigate } from "react-router-dom";
+import { useGetSubSubCatsQuery } from "../../services/queries";
+import { useEffect } from "react";
+import toast from "react-hot-toast";
+
+const debug = true;
 
 const SubToSubCategories = () => {
   const navigate = useNavigate();
 
+  // * hook to get all sub to sub categories
+  const { data, isPending, isError, error } = useGetSubSubCatsQuery();
+
+  useEffect(() => {
+    debug && console.log(data?.data);
+  }, [data]);
+
   const handleAddClick = () => {
     navigate("/app/sub-sub-categories/add");
   };
+
+  if (isError) {
+    toast.error(error.message);
+    return <ErrorDisplay />;
+  }
 
   return (
     <div className="flex flex-col items-end gap-6 bg-base-100">
@@ -50,13 +68,13 @@ const SubToSubCategories = () => {
           </tr>
         </thead>
         <tbody className="bg-white divide-y divide-gray-200">
-          {sub2SubCategoryData.map((item) => (
-            <tr key={item.id}>
+          {data?.data.map((item, index) => (
+            <tr key={index}>
               <td className="px-6 py-4 whitespace-nowrap">
                 <img
                   className="h-10 w-10 rounded-full object-cover"
-                  src={item.imageUrl}
-                  alt=""
+                  src={item.image}
+                  alt={item.description}
                 />
               </td>
               <td className="px-6 py-4 whitespace-nowrap">{item.name}</td>
@@ -80,6 +98,8 @@ const SubToSubCategories = () => {
           ))}
         </tbody>
       </table>
+
+      <LoadingModal pending={isPending} />
     </div>
   );
 };

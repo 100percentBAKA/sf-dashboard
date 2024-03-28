@@ -1,33 +1,47 @@
 import { useEffect, useState } from "react";
-import { tableData } from "../data/categories";
 import * as yup from "yup";
 import { useFormik } from "formik";
 import { useGetCatsQuery } from "../services/queries";
 import ErrorDisplay from "../components/ui/ErrorDisplay";
 import toast from "react-hot-toast";
 import LoadingModal from "../components/ui/LoadingModal";
-import { useDelCatMutation } from "../services/mutations";
+import {
+  useDelCatMutation,
+  usePostCatMutation,
+  usePutCatMutation,
+} from "../services/mutations";
 import { useQueryClient } from "@tanstack/react-query";
 
 const debug = true;
 
+// ! C H E C K - I ( add file size validation )
 const CAT_SCHEMA = yup.object().shape({
   category: yup.string().required("Category is required"),
-  // image: yup
-  //   .mixed()
-  //   .file("A file is required")
-  //   .maxFileSize(1024 * 1024 * 5, "File size must be less than 5MB")
-  //   .fileType(["image/jpeg", "image/png"], "Unsupported File Format"),
+  image: yup
+    .mixed()
+    .test(
+      "fileFormat",
+      "Only JPEG, PNG, JPG and WEB files are allowed",
+      (value) => {
+        if (value) {
+          const supportedFormats = ["jpeg", "jpg", "png", "webp"];
+          return supportedFormats.includes(value.name.split(".").pop());
+        }
+      }
+    ),
 });
 
 const Categories = () => {
-  const [currentCategoryName, setCurrentCategoryName] = useState("");
+  const [currentCategory, setCurrentCategory] = useState("");
   const [deleteID, setDeleteID] = useState(null);
 
   // * hook for getting categories
   const { data, isPending, isError, error } = useGetCatsQuery();
-  //* hook for delete a category
+
+  //* hook for deleting, posting and updating a category
   const delCatMutation = useDelCatMutation();
+  const postCatMutation = usePostCatMutation();
+  const putCatMutation = usePutCatMutation();
 
   // * for invalidating requests upon successful delete operation
   const queryClient = useQueryClient();
@@ -46,18 +60,21 @@ const Categories = () => {
     document.getElementById(`${element}_cat_modal`).classList.add("modal-open");
   };
 
-  // * handling onChange for images
-  // const handleFileChange = (event) => {
-  //   const file = event.currentTarget.files[0];
-  //   formik.setFieldValue("image", file);
-  // };
+  // * handling onChange for add images
+  const handleFileChange = (event) => {
+    const file = event.currentTarget.files[0];
+    formik.setFieldValue("image", file);
+  };
 
-  const handleUpdate = (id) => {
-    const category = tableData.find((item) => item.id === id);
-    if (category) {
-      setCurrentCategoryName(category.name);
-      handleOpenModal("update");
-    }
+  // * handling onChange for update images
+  const handleUpdateFileChange = (event) => {
+    const file = event.currentTarget.files[0];
+    updateFormik.setFieldValue("image", file);
+  };
+
+  const handleUpdate = (name) => {
+    setCurrentCategory(name);
+    handleOpenModal("update");
   };
 
   const handleDelete = (name, index) => {
@@ -69,28 +86,80 @@ const Categories = () => {
         if (data) toast.error(data.data.detail);
       },
 
-      // ! C H E C K  -  I (replace with error message)
       onSuccess: async (data) => {
         await queryClient.invalidateQueries({
           queryKey: ["get-all-categories"],
         });
         setDeleteID(null);
-        if (data) toast.success("Category deleted successfully");
+        if (data) toast.success(data.data.SUCCESS);
       },
     });
   };
 
-  // * formik form handling
+  // * formik form handling for add category
   const formik = useFormik({
     initialValues: {
       category: "",
-      // image: undefined,
+      image: "",
+      description: "This is a placeholder description",
     },
     validationSchema: CAT_SCHEMA,
 
     onSubmit: () => {
-      debug && console.log("Add button clicked");
-      handleCloseModal("add");
+      // * form data to construct request payload for file uploads
+      const postData = new FormData();
+      postData.append("name", formik.values.category);
+      postData.append("description", formik.values.description);
+      postData.append("image", formik.values.image);
+
+      debug && console.log(postData);
+
+      postCatMutation.mutate(postData, {
+        onError: (data) => {
+          debug && console.log(data);
+          if (data) toast.error("Error posting category data");
+          handleCloseModal("add");
+        },
+
+        onSuccess: async (data) => {
+          debug && console.log(data);
+          if (data) toast.success("Successfully posted category data");
+          await queryClient.invalidateQueries({
+            queryKey: ["get-all-categories"],
+          });
+          handleCloseModal("add");
+        },
+      });
+    },
+  });
+
+  // * formik form handling for update category
+  const updateFormik = useFormik({
+    initialValues: {
+      category: currentCategory,
+      image: "",
+      description: "This is a Placeholder description",
+    },
+    validationSchema: CAT_SCHEMA,
+
+    onSubmit: (values) => {
+      const formData = new FormData();
+      formData.append("name", values.category);
+      formData.append("description", values.description);
+      formData.append("image", values.image);
+
+      putCatMutation.mutate(formData, {
+        onSuccess: async () => {
+          toast.success("Category updated successfully");
+          handleCloseModal("update");
+          await queryClient.invalidateQueries(["get-all-categories"]);
+        },
+
+        onError: (error) => {
+          toast.error(`Error updating category: ${error.message}`);
+          handleCloseModal("update");
+        },
+      });
     },
   });
 
@@ -149,27 +218,31 @@ const Categories = () => {
 
               {/* add image upload */}
               <div>
-                <label htmlFor="image">Upload Image</label>
                 <input
                   type="file"
                   name="image"
                   id="image"
                   accept="image/jpeg, image/png"
-                  // onBlur={formik.handleBlur}
-                  // onChange={handleFileChange}
+                  onBlur={formik.handleBlur}
+                  onChange={handleFileChange}
                 />
-                {/* {formik.touched.image && formik.errors.image ? (
+                {formik.touched.image && formik.errors.image ? (
                   <div className="text-[12px] text-red-500">
                     {formik.errors.image}
                   </div>
-                ) : null} */}
+                ) : null}
               </div>
 
               <button
-                className="bg-green-500 hover:bg-green-700 text-white font-semibold py-1 px-4 rounded transition-all duration-300 ease-in-out"
+                className="bg-green-500 hover:bg-green-700 text-white font-semibold py-1 px-4 rounded transition-all duration-300 ease-in-out w-[100px]"
                 type="submit"
+                disabled={postCatMutation.isPending}
               >
-                Add
+                {postCatMutation.isPending ? (
+                  <div className="custom-spinner"></div>
+                ) : (
+                  <div>Add</div>
+                )}
               </button>
             </div>
           </form>
@@ -179,28 +252,58 @@ const Categories = () => {
       {/* Update Modal section */}
       <dialog id="update_cat_modal" className="modal modal-middle">
         <div className="modal-box w-fit">
-          <form method="dialog" className="flex flex-col gap-4 items-start">
-            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+          <form
+            method="dialog"
+            className="flex flex-col gap-4 items-start"
+            onSubmit={updateFormik.handleSubmit}
+          >
+            <div
+              className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+              onClick={() => handleCloseModal("update")}
+            >
               ✕
-            </button>
+            </div>
             <div className="flex flex-col gap-4">
-              <label
-                htmlFor="update-category-text"
-                className="text-[18px] font-semibold"
-              >
+              <label htmlFor="category" className="text-[18px] font-semibold">
                 Update Category
               </label>
               <input
                 type="text"
-                id="update-category-text"
-                name="category-text"
-                value={currentCategoryName}
-                onChange={(e) => setCurrentCategoryName(e.target.value)}
+                id="category"
+                name="category"
+                value={currentCategory}
+                onChange={(e) => setCurrentCategory(e.target.value)}
+                onBlur={updateFormik.handleBlur}
                 className="bg-white rounded-[10px] h-[48px] w-[280px] pl-4 lg:w-[350px] xl:w-[400px]"
               />
             </div>
-            <button className="bg-green-500 hover:bg-green-700 text-white font-semibold py-1 px-3 rounded transition-all duration-300 ease-in-out">
-              Update
+
+            {/* image upload */}
+            <div>
+              <input
+                type="file"
+                name="image"
+                id="image"
+                accept="image/jpeg, image/png"
+                onBlur={updateFormik.handleBlur}
+                onChange={handleUpdateFileChange}
+              />
+              {updateFormik.touched.image && updateFormik.errors.image ? (
+                <div className="text-[12px] text-red-500">
+                  {updateFormik.errors.image}
+                </div>
+              ) : null}
+            </div>
+
+            <button
+              className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-1 px-3 rounded transition-all duration-300 ease-in-out w-[100px]"
+              type="submit"
+            >
+              {putCatMutation.isPending ? (
+                <div className="custom-spinner"></div>
+              ) : (
+                <div>Update</div>
+              )}
             </button>
           </form>
         </div>
@@ -249,8 +352,8 @@ const Categories = () => {
               <td className="px-6 py-4 whitespace-nowrap">{item.name}</td>
               <td className="px-6 py-4 whitespace-nowrap">
                 <button
-                  onClick={() => handleUpdate(index)}
-                  className="bg-green-500 hover:bg-green-700 text-white font-semibold py-1 px-3 rounded transition-all duration-300 ease-in-out"
+                  onClick={() => handleUpdate(item.name)}
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-1 px-3 rounded transition-all duration-300 ease-in-out w-[100px]"
                 >
                   Update
                 </button>
@@ -262,7 +365,7 @@ const Categories = () => {
                   disabled={deleteID === index}
                 >
                   {deleteID === index ? (
-                    <div className="loading loading-spinner loading-md"></div>
+                    <div className="custom-spinner"></div>
                   ) : (
                     <div>DELETE</div>
                   )}

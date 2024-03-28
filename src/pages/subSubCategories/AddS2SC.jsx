@@ -1,127 +1,175 @@
-import { Formik, Form, Field } from "formik";
+import { useEffect } from "react";
+import { useFormik } from "formik";
 import * as Yup from "yup";
+import { useGetCatsQuery, useGetSubCatsQuery } from "../../services/queries";
+import toast from "react-hot-toast";
+import ErrorDisplay from "../../components/ui/ErrorDisplay";
 
-// Define a validation schema
+const debug = true;
+
 const SubToSubCategoriesSchema = Yup.object().shape({
   category: Yup.string().required("Category is required"),
   subCategory: Yup.string().required("Sub category is required"),
   subToSubCategoryName: Yup.string().required(
     "Sub to sub category name is required"
   ),
-  description: Yup.string().required("Description is required"),
+  image: Yup.mixed().test(
+    "fileFormat",
+    "Only JPEG, PNG, JPG, and WEBP files are allowed",
+    (value) => {
+      if (value) {
+        const supportedFormats = ["jpeg", "jpg", "png", "webp"];
+        return supportedFormats.includes(
+          value.name.split(".").pop().toLowerCase()
+        );
+      }
+      return true; // Allows the field to be optional
+    }
+  ),
 });
 
 const AddS2SC = () => {
+  // const navigate = useNavigate();
+
+  // * hooks to get categories and sub categories
+  const { data: catsData, isError: isCatsError } = useGetCatsQuery();
+  const { data: subData, isError: isSubCatsError } = useGetSubCatsQuery();
+
+  useEffect(() => {
+    if (catsData && subData) {
+      debug && console.log(catsData.data);
+      debug && console.log(subData.data);
+    }
+  }, [catsData, subData]);
+
+  const formik = useFormik({
+    initialValues: {
+      category: "",
+      subCategory: "",
+      subToSubCategoryName: "",
+      image: null,
+      description: "This is a placeholder description",
+    },
+    validationSchema: SubToSubCategoriesSchema,
+    onSubmit: (values) => {
+      // Submit logic goes here
+      console.log(values);
+    },
+  });
+
+  const handleFileChange = (event) => {
+    const file = event.currentTarget.files[0];
+    formik.setFieldValue("image", file);
+  };
+
+  if (isCatsError || isSubCatsError) {
+    toast.error("Error retrieving data");
+    return <ErrorDisplay />;
+  }
+
   return (
     <div className="p-8 bg-white rounded-lg shadow-md">
-      <Formik
-        initialValues={{
-          category: "",
-          subCategory: "",
-          subToSubCategoryName: "",
-          description: "",
-        }}
-        validationSchema={SubToSubCategoriesSchema}
-        onSubmit={(values, actions) => {
-          console.log(values);
-          actions.setSubmitting(false);
-        }}
-      >
-        {({ errors, touched }) => (
-          <Form>
-            <div className="flex-col space-y-2 mb-10">
-              <label htmlFor="category" className="text-[18px] font-semibold">
-                Select Category
-              </label>
-              <Field
-                as="select"
-                name="category"
-                className="select w-full"
-                id="category"
-              >
-                <option disabled value="">
-                  Select Category
-                </option>
-                {/* Add your categories here */}
-              </Field>
-              {errors.category && touched.category ? (
-                <div className="text-[12px] text-red-500">
-                  {errors.category}
-                </div>
-              ) : null}
+      <form onSubmit={formik.handleSubmit}>
+        <div className="flex-col space-y-2 mb-10">
+          <label htmlFor="category" className="text-[18px] font-semibold">
+            Select Category
+          </label>
+          <select
+            name="category"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.category}
+            className="select w-full"
+            id="category"
+          >
+            <option disabled value="">
+              Select Category
+            </option>
+            {catsData?.data.map((cat, index) => (
+              <option key={index} value={cat.name}>
+                {cat.name}
+              </option>
+            ))}
+          </select>
+          {formik.touched.category && formik.errors.category && (
+            <div className="text-[12px] text-red-500">
+              {formik.errors.category}
             </div>
+          )}
+        </div>
 
-            <div className="flex-col space-y-2 mb-10">
-              <label
-                htmlFor="subCategory"
-                className="text-[18px] font-semibold"
-              >
-                Select Sub Category
-              </label>
-              <Field
-                as="select"
-                name="subCategory"
-                className="select w-full"
-                id="subCategory"
-              >
-                <option disabled value="">
-                  Select Sub Category
-                </option>
-                {/* Add your sub categories here */}
-              </Field>
-              {errors.subCategory && touched.subCategory ? (
-                <div className="text-[12px] text-red-500">
-                  {errors.subCategory}
-                </div>
-              ) : null}
+        <div className="flex-col space-y-2 mb-10">
+          <label htmlFor="subCategory" className="text-[18px] font-semibold">
+            Select Sub Category
+          </label>
+          <select
+            name="subCategory"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.subCategory}
+            className="select w-full"
+            id="subCategory"
+          >
+            <option disabled value="">
+              Select Sub Category
+            </option>
+            {subData?.data.map((sub, index) => (
+              <option key={index} value={sub.name}>
+                {sub.name}
+              </option>
+            ))}
+          </select>
+          {formik.touched.subCategory && formik.errors.subCategory && (
+            <div className="text-[12px] text-red-500">
+              {formik.errors.subCategory}
             </div>
+          )}
+        </div>
 
-            <div className="flex-col space-y-2 mb-10">
-              <label
-                htmlFor="subToSubCategoryName"
-                className="text-[18px] font-semibold"
-              >
-                Enter Sub to Sub Category Name
-              </label>
-              <Field
-                type="text"
-                name="subToSubCategoryName"
-                placeholder="Enter Sub to Sub Category Name"
-                className="input w-full"
-              />
-              {errors.subToSubCategoryName && touched.subToSubCategoryName ? (
-                <div className="text-[12px] text-red-500">
-                  {errors.subToSubCategoryName}
-                </div>
-              ) : null}
+        <div className="flex-col space-y-2 mb-10">
+          <label
+            htmlFor="subToSubCategoryName"
+            className="text-[18px] font-semibold"
+          >
+            Enter Sub to Sub Category Name
+          </label>
+          <input
+            type="text"
+            name="subToSubCategoryName"
+            placeholder="Enter Sub to Sub Category Name"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.subToSubCategoryName}
+            className="input w-full"
+          />
+          {formik.touched.subToSubCategoryName &&
+            formik.errors.subToSubCategoryName && (
+              <div className="text-[12px] text-red-500">
+                {formik.errors.subToSubCategoryName}
+              </div>
+            )}
+        </div>
+
+        <div className="flex-col space-y-2 mb-10">
+          <input
+            type="file"
+            name="image"
+            id="image"
+            accept="image/jpeg, image/png, image/webp"
+            onChange={handleFileChange}
+            onBlur={formik.handleBlur}
+          />
+          {formik.touched.image && formik.errors.image && (
+            <div className="text-[12px] text-red-500">
+              {formik.errors.image}
             </div>
+          )}
+        </div>
 
-            {/* <div className="flex-col space-y-2 mb-10">
-              <label
-                htmlFor="description"
-                className="text-[18px] font-semibold"
-              >
-                Enter Description
-              </label>
-              <Field
-                as="textarea"
-                name="description"
-                placeholder="Enter Description"
-                className="input w-full h-[100px]"
-              />
-              {errors.description && touched.description ? (
-                <div className={styles["error-display"]}>
-                  {errors.description}
-                </div>
-              ) : null}
-            </div> */}
-
-            <button type="submit" className="btn btn-primary w-full">
-              Submit
-            </button>
-          </Form>
-        )}
-      </Formik>
+        <button type="submit" className="btn btn-primary w-full">
+          Submit
+        </button>
+      </form>
     </div>
   );
 };
