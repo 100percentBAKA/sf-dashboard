@@ -6,19 +6,16 @@ import ForgetPasswordRoot from "./pages/forget/ForgetPasswordRoot";
 import ForgetForm from "./pages/forget/ForgetForm";
 import OtpForm from "./pages/forget/OtpForm";
 import ResetForm from "./pages/forget/ResetForm";
-import FileUpload from "./pages/FileUpload";
+import BookUpload from "./pages/BookUpload";
 import ExcelUpload from "./pages/ExcelUpload";
 import Categories from "./pages/Categories";
 import PageNotFound from "./pages/404";
-import SubCategories from "./pages/subCategories/SubCategories";
-import SubToSubCategories from "./pages/subSubCategories/SubToSubCategories";
 import Author from "./pages/Author";
-import AddSC from "./pages/subCategories/AddSC";
-import UpdateSC from './pages/subCategories/UpdateSC'
-import AddS2SC from "./pages/subSubCategories/AddS2SC";
 import Register from "./pages/Register";
 import AuthRoot from "./pages/AuthRoot";
+import Book from "./pages/book/Book";
 import { ProtectedRoute1, ProtectedRoute2, ProtectedRoute3 } from "./components/ProtectedRoute";
+import AddBook from "./pages/book/AddBook";
 
 const router = createBrowserRouter([
     {
@@ -61,28 +58,16 @@ const router = createBrowserRouter([
                 element: <Categories />,
             },
             {
-                path: "sub-categories",
-                element: <SubCategories />,
+                path: "book",
+                element: <Book />
             },
             {
-                path: "sub-categories/add",
-                element: <AddSC />,
+                path: "book-upload",
+                element: <BookUpload />,
             },
             {
-                path: "sub-categories/update",
-                element: <UpdateSC />,
-            },
-            {
-                path: "sub-sub-categories",
-                element: <SubToSubCategories />,
-            },
-            {
-                path: "sub-sub-categories/add",
-                element: <AddS2SC />,
-            },
-            {
-                path: "file-upload",
-                element: <FileUpload />,
+                path: "add-book",
+                element: <AddBook />
             },
             {
                 path: "excel-upload",
