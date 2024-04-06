@@ -106,7 +106,7 @@ const OtpForm = () => {
   return (
     <form className="bg-white p-6 lg:p-10 xl:p-12 flex flex-col gap-6 rounded-[10px] max-w-[450px]">
       <div className="flex flex-col gap-2">
-        <div className="text-2xl font-semibold">Email Verification</div>
+        <div className="text-2xl font-semibold">Phone Verification</div>
         <div>
           OTP has been sent to {phoneNo.substring(0, 4)}
           *****
