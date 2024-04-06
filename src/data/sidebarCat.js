@@ -19,21 +19,21 @@ const sidebarCat = [
         subcategories: [],
     },
     {
-        name: "File Category",
+        name: "Category",
         icon: <FaFile />,
         to: "/app/categories",
         subcategories: [],
     },
     {
-        name: "File Sub Category",
-        icon: <FaFile />,
-        to: "/app/sub-categories",
+        name: "Book",
+        to: "/app/book",
+        icon: <FaBook />,
         subcategories: [],
     },
     {
-        name: "File Sub to Sub Category",
-        icon: <FaFile />,
-        to: "/app/sub-sub-categories",
+        name: "Book Upload",
+        to: "/app/book-upload",
+        icon: <FaPage4 />,
         subcategories: [],
     },
     {
@@ -41,18 +41,6 @@ const sidebarCat = [
         icon: <FaUser />,
         to: "/app/author",
         subcategories: []
-    },
-    {
-        name: "File Upload",
-        to: "/app/file-upload",
-        icon: <FaPage4 />,
-        subcategories: [],
-    },
-    {
-        name: "Pdf Books",
-        to: "/app/pdf-books",
-        icon: <FaBook />,
-        subcategories: [],
     },
     {
         name: "Publications",
